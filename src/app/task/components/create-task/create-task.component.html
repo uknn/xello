@@ -1,0 +1,53 @@
+<h1>Create New Task</h1>
+
+<div class="row">
+  <form [formGroup]="form" class="form-group col-md-4">
+    <input id="id" formControlName="id" type="hidden">
+    <div class="col-md-2 form-check" style="margin-top: 10px; margin-left: 30px;">
+      <mat-form-field>
+        <mat-label for="title">title</mat-label>
+        <input matInput id="title" formControlName="title" placeholder="Enter your title" class="form-control">
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-2 form-check" style="margin-top: 10px; margin-left: 30px;">
+      <mat-form-field>
+        <mat-label for="description">Description</mat-label>
+        <input matInput id="description" formControlName="description" placeholder="Enter your description" class="form-control">
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-2 form-check" style="margin-top: 10px; margin-left: 30px;">
+      <mat-form-field>
+        <mat-label>Status</mat-label>
+        <mat-select  formControlName="status">
+          <mat-option *ngFor="let elem of dropdownValues" [value]="elem"> {{ elem | dropdownValue }} </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-2 form-check" style="margin-top: 10px; margin-left: 30px;">
+      <mat-form-field>
+        <mat-label>Tasks</mat-label>
+        <mat-select  formControlName="tasks" multiple>
+          <mat-option *ngFor="let elem of taskDependencies" [value]="elem.id"> {{ elem.title }} </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+
+    <div class="col-md-2 form-check" style="margin-top: 10px; margin-left: 30px;">
+      <mat-form-field>
+        <mat-label for="description">Choose a date</mat-label>
+        <input matInput id="dueDate" formControlName="dueDate" [matDatepicker]="picker">
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </form>
+
+  <div class="col-md-5">
+    <button mat-raised-button color="primary" (click)="createTask()" [disabled]="!form.valid">Add task</button>
+  </div>
+</div>

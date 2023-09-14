@@ -1,0 +1,89 @@
+<mat-form-field>
+  <!--filter-->
+  <mat-label>Filter</mat-label>
+  <input matInput type="text" (keyup)="filter($event)"/>
+</mat-form-field>
+
+<ngx-datatable
+  #table
+  class='material striped'
+  [columnMode]="'flex'"
+  [headerHeight]="50"
+  [footerHeight]="50"
+  [rowHeight]="'auto'"
+  [limit]="10"
+  [rows]='rows'>
+
+  <ngx-datatable-column [flexGrow]="0.5">
+    <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex"
+                 ngx-datatable-cell-template>
+      <mat-icon (click)="toggleEditable(rowIndex)">mode_edit</mat-icon>
+      <mat-icon (click)="delete(row, rowIndex);">delete</mat-icon>
+      <mat-icon (click)="save(row, rowIndex);">save</mat-icon>
+    </ng-template>
+  </ngx-datatable-column>
+
+  <!-- Other Columns -->
+  <ngx-datatable-column [flexGrow]="1.5" name="Id" prop="id">
+    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+      <mat-form-field>
+        <input matInput value="id" [(ngModel)]="row.id" disabled>
+      </mat-form-field>
+    </ng-template>
+  </ngx-datatable-column>
+
+  <ngx-datatable-column [flexGrow]="1.5" name="description" prop="description">
+    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+      <mat-form-field>
+        <input matInput value="description" [(ngModel)]="row.description" [disabled]="!isEditable[rowIndex]">
+      </mat-form-field>
+    </ng-template>
+  </ngx-datatable-column>
+
+  <ngx-datatable-column [flexGrow]="1.5"name="title" prop="title">
+    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+      <mat-form-field>
+        <input matInput value="title" [(ngModel)]="row.title" [disabled]="!isEditable[rowIndex]">
+      </mat-form-field>
+    </ng-template>
+  </ngx-datatable-column>
+
+  <ngx-datatable-column [flexGrow]="1.5" name="status" prop="status">
+    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+      <mat-form-field style="width: 100%;">
+        <mat-select [disabled]="!isEditable[rowIndex]"
+                    [(ngModel)]="row.status"
+                    name="status">
+          <mat-option
+            *ngFor="let elem of dropdownValues" [value]="elem"> {{ elem | dropdownValue }} </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </ng-template>
+  </ngx-datatable-column>
+
+  <ngx-datatable-column [flexGrow]="1.5" name="status" prop="tasks">
+    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+      <mat-form-field style="width: 100%;">
+        <mat-select [disabled]="!isEditable[rowIndex]"
+                    [(ngModel)]="row.tasks"
+                    name="status"
+                    multiple>
+          <mat-option
+            *ngFor="let elem of (tasks | taskDependenciesValue: row.id)" [value]="elem"> {{ tasks | taskTitlePipe: elem }} </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </ng-template>
+  </ngx-datatable-column>
+
+  <ngx-datatable-column [flexGrow]="1.5" name="dueDate" prop="dueDate">
+    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+      <mat-form-field>
+        <input matInput value="dueDate" [(ngModel)]="row.dueDate" [matDatepicker]="picker" [disabled]="!isEditable[rowIndex]">
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </ng-template>
+  </ngx-datatable-column>
+
+</ngx-datatable>

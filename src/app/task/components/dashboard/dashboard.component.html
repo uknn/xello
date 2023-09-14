@@ -1,0 +1,7 @@
+<div class="container">
+  <app-create-task (createTaskEvent)="createTask($event)" [tasks]="(tasks$ | async) || []"></app-create-task>
+  <h2>My tasks: </h2>
+  <app-task-list [tasks]="tasks$ | async" (editTaskEvent)="createTask($event)"></app-task-list>
+</div>
+
+
